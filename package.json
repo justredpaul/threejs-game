@@ -1,0 +1,16 @@
+{
+  "name": "three-js-first-step",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "private": "true",
+  "devDependencies": {
+    "parcel": "^2.0.0-beta.1"
+  },
+  "dependencies": {
+    "cannon": "^0.6.2",
+    "three": "^0.126.1"
+  }
+}

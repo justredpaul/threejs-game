@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" >
+  <title>Three JS First step</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+
+      width: 100%;
+      height: 100%;
+
+      font-family: sans-serif;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    .score {
+      position: fixed;
+      top: 0;
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      color: #fff;
+      font-size: 24px;
+    }
+
+    .game-over {
+      visibility: hidden;
+
+      position: fixed;
+      top: 50%;
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+
+      width: 80%;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .game-over__message {
+      font-size: 40px;
+      color: #fff;
+    }
+    .game-over__restart {
+      padding: 10px 20px;
+
+      background-color: transparent;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 24px;
+    }
+
+    @media screen and (min-width: 720px) {
+      .game-over__message {
+        font-size: 72px;
+        color: #fff;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<p class="score">Score: <span id="score"></span></p>
+
+<div class="game-over">
+  <p class="game-over__message">Game over!</p>
+  <button class="game-over__restart">Start again?</button>
+</div>
+
+<script async src="./index.js"></script>
+</body>
+</html>
