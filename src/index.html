@@ -31,9 +31,8 @@
       font-size: 24px;
     }
 
+    .welcome,
     .game-over {
-      visibility: hidden;
-
       position: fixed;
       top: 50%;
       left: 50%;
@@ -47,11 +46,24 @@
       justify-content: center;
       align-items: center;
     }
-    .game-over__message {
-      font-size: 40px;
-      color: #fff;
+
+    .game-over {
+      visibility: hidden;
     }
+
+    .welcome__message,
+    .game-over__message {
+      font-size: 32px;
+      line-height: 58px;
+      color: #fff;
+
+      text-align: center;
+    }
+
+    .welcome__start,
     .game-over__restart {
+      cursor: pointer;
+
       padding: 10px 20px;
 
       background-color: transparent;
@@ -72,6 +84,12 @@
 <body>
 
 <p class="score">Score: <span id="score"></span></p>
+
+<div class="welcome">
+  <p class="welcome__message">Tap or click on the block to place it on top of the existing block.
+    <br />The more blocks – the more points!</p>
+  <span class="welcome__start">Start</span>
+</div>
 
 <div class="game-over">
   <p class="game-over__message">Game over!</p>

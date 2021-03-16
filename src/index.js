@@ -2,12 +2,13 @@ import * as THREE from 'three';
 import * as CANNON from 'cannon';
 
 let camera, renderer, scene;
-let score, gameOver, restart;
+let score, welcome, gameOver, restart;
 let world;
 let stack = [];
 let overhangs = [];
 const originalBlockSize = 3;
 const boxHeight = 1;
+let isGameStarted = false;
 
 function addLayer(x, z, width, depth, direction) {
   const y = boxHeight * stack.length;
@@ -71,58 +72,11 @@ function restartGame() {
   score.textContent = stack.length - 1;
 }
 
-function init() {
-  world = new CANNON.World();
-  world.gravity.set(0, -10, 0);
-  world.broadphase = new CANNON.NaiveBroadphase();
-  world.solver.iterations = 40;
-
-  scene = new THREE.Scene();
-
-  addLayer(0, 0, originalBlockSize, originalBlockSize);
-
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-  scene.add(ambientLight);
-
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
-  directionalLight.position.set(10, 20, 0);
-  scene.add(directionalLight);
-
-  // Camera
-  const aspectRatio = window.innerHeight / window.innerWidth;
-  const width = aspectRatio >= 1 ? 10 : 15;
-  const height = width * aspectRatio;
-
-  camera = new THREE.OrthographicCamera(
-    width / -2,
-    width / 2,
-    height / 2,
-    height / -2,
-    1,
-    100
-  );
-  camera.position.set(10, 10, 10);
-  camera.lookAt(0, 0, 0);
-
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.render(scene, camera);
-
-  document.body.appendChild(renderer.domElement);
-
-  score = document.querySelector('#score');
-  score.textContent = stack.length - 1;
-  gameOver = document.querySelector('.game-over');
-  restart = document.querySelector('.game-over__restart');
-
-  restart.addEventListener('click', restartGame);
-}
-
-let isGameStarted = false;
-
-const onTap = () => {
+function  onTap() {
   if (!isGameStarted) {
     addLayer(-10, 0, originalBlockSize, originalBlockSize, 'x');
+
+    welcome.style.visibility = 'hidden';
 
     renderer.setAnimationLoop(animation);
     isGameStarted = true;
@@ -171,10 +125,7 @@ const onTap = () => {
       addLayer(nextX, nextZ, newWidth, newDepth, nextDirection);
     }
   }
-};
-
-window.addEventListener('click', onTap);
-window.addEventListener('touchend', onTap);
+}
 
 function isGameOver() {
   const topLayer = stack[stack.length - 1];
@@ -209,6 +160,57 @@ function updatePhysics() {
     element.threejs.position.copy(element.cannonjs.position);
     element.threejs.quaternion.copy(element.cannonjs.quaternion);
   });
+}
+
+function init() {
+  world = new CANNON.World();
+  world.gravity.set(0, -10, 0);
+  world.broadphase = new CANNON.NaiveBroadphase();
+  world.solver.iterations = 40;
+
+  scene = new THREE.Scene();
+
+  addLayer(0, 0, originalBlockSize, originalBlockSize);
+
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambientLight);
+
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+  directionalLight.position.set(10, 20, 0);
+  scene.add(directionalLight);
+
+  // Camera
+  const aspectRatio = window.innerHeight / window.innerWidth;
+  const width = aspectRatio >= 1 ? 10 : 15;
+  const height = width * aspectRatio;
+
+  camera = new THREE.OrthographicCamera(
+    width / -2,
+    width / 2,
+    height / 2,
+    height / -2,
+    1,
+    100
+  );
+  camera.position.set(10, 10, 10);
+  camera.lookAt(0, 0, 0);
+
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.render(scene, camera);
+
+  window.addEventListener('click', onTap);
+  window.addEventListener('touchend', onTap);
+
+  document.body.appendChild(renderer.domElement);
+
+  score = document.querySelector('#score');
+  score.textContent = stack.length - 1;
+  welcome = document.querySelector('.welcome');
+  gameOver = document.querySelector('.game-over');
+  restart = document.querySelector('.game-over__restart');
+
+  restart.addEventListener('click', restartGame);
 }
 
 init();
